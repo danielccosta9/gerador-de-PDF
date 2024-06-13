@@ -22,7 +22,8 @@ def carregar_arquivo():
         messagebox.showinfo("Aviso", "Aguarde enquanto as planilhas estão sendo geradas...")
         try:
             nome_pasta = os.path.splitext(nome_arquivo)[0]
-            dados = pd.read_csv(f'{nome_arquivo}').fillna('')
+            dados = pd.read_csv(f'{nome_arquivo}', sep=';').fillna('')
+            
             if not os.path.exists(f'{nome_pasta}'):
                 os.makedirs(f'{nome_pasta}')
             for (saida, carro), grupo in dados.groupby(['Saída', 'Carro']):
@@ -91,7 +92,7 @@ def criar_pdf(grupo, nome_arquivo):
         dados_tabela.append(['', '', '', '', '', '', '', ' '])
     
     # Criando a tabela com os dados
-    tabela = Table(dados_tabela, colWidths=[50, 90, 70, 70, 40, 40, 170, 220])
+    tabela = Table(dados_tabela, colWidths=[43, 120, 70, 70, 40, 42, 170, 200])
     tabela.setStyle(TableStyle([
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
@@ -110,8 +111,8 @@ def criar_pdf(grupo, nome_arquivo):
     
     # Rodapé final do PDF
     rodape = [
-        [f'Digitado por: {digitador}'],
-        [''],
+        [f'{digitador}'],
+        ['EMITENTE'],
         [''],
         ['__________________________________________'],
         [f'{nome_secretario}'],
